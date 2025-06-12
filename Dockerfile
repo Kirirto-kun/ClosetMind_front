@@ -13,7 +13,7 @@ COPY . .
 # Build Next.js application
 RUN npm run build
 
-# -------- Production stage --------
+# -------- Production stage ------
 FROM node:20-alpine AS runner
 
 WORKDIR /app
