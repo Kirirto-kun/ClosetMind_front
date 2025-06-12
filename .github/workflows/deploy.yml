@@ -1,0 +1,27 @@
+name: Deploy to Droplet
+
+on:
+  push:
+    branches:
+      - main  # отслеживаем пуши в ветку main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key for deployment
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
+        env:
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          REMOTE_APP_DIR: ${{ secrets.REMOTE_APP_DIR }}  # e.g. /srv/next/ClosetMind_front
+        run: |
+          ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST "cd $REMOTE_APP_DIR && git pull origin main && docker compose up -d --build --remove-orphans"
