@@ -30,4 +30,4 @@ RUN npm ci --only=production --ignore-scripts --legacy-peer-deps && npm cache cl
 
 EXPOSE 3000
 
-CMD ["npm", "start"] 
+CMD ["npm", "start"]  
