@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci --ignore-scripts
+RUN npm ci --ignore-scripts --legacy-peer-deps
 
 # Copy the rest of the application code
 COPY . .
@@ -26,7 +26,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.* ./
 
 # Install production dependencies only
-RUN npm ci --only=production --ignore-scripts && npm cache clean --force
+RUN npm ci --only=production --ignore-scripts --legacy-peer-deps && npm cache clean --force
 
 EXPOSE 3000
 
