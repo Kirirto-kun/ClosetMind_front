@@ -13,6 +13,12 @@ COPY . .
 # Build Next.js application
 RUN npm run build
 
+# Configure npm retry logic to handle transient registry errors
+RUN npm config set fetch-retries 5 \
+    && npm config set fetch-retry-factor 10 \
+    && npm config set fetch-retry-mintimeout 10000 \
+    && npm config set fetch-retry-maxtimeout 60000
+
 # -------- Production stage ------
 FROM node:20-alpine AS runner
 
